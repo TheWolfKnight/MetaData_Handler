@@ -10,21 +10,21 @@ class _InputFileHandler(object):
 		self.fileName = fileName
 		self.data: dict[str, list[str]]
 
-	def readInputFile(self: object) -> Optional[str]:
+	def readInputFile(self: object) -> str:
 		"""
 		Reads a json file and gives the data to the InputFile object, whereafter it returns the root path if it exists\n
 		@param self: object
 		@return: Optional[str]
 		"""
 		with open(self.fileName, 'r') as f:
-			data = json.load(f.read())
-		self.data = data
+			data = json.loads(f.read())
+		self.data = data.copy()
 		try:
-			data["path"]
+			[*data].index("path")
 			del self.data["path"]
 			return data["path"]
 		except ValueError:
-			return None
+			return "."
 
 	def getInputInformation(self:object) -> (str, list[str]):
 		"""
