@@ -73,9 +73,11 @@ def main():
 	rootPath = inputFile.readInputFile()
 
 	for file, data in inputFile.getInputInformation():
-		metaFile = TargetFile(file, rootPath)
-		metaFile.writeMetaData(data)
-
+		try:
+			metaFile = TargetFile(file, rootPath)
+			metaFile.writeMetaData(data)
+		except RuntimeError:
+			print(f"{file} does not exist")
 
 if __name__ == '__main__':
 	main()
