@@ -7,6 +7,7 @@ import pyexiv2 as exiv
 
 class _InputFileHandler(object):
 	def __init__(self: object, fileName: str):
+		assert fileName.endswith('.json')
 		self.fileName = fileName
 		self.data: dict[str, list[str]]
 
@@ -66,11 +67,24 @@ def main():
 	args = list(map(lambda x: x.lower(), sys.argv))
 	try:
 		file = args[args.index("-f") +1]
-	except IndexError:
-		print("Please give a file")
+	except RuntimeError:
+		exit(
+			{
+				"Message": "No file provided",
+				"ExitCode": 1
+			}
+		)
 
-	inputFile = _InputFileHandler(file)
-	rootPath = inputFile.readInputFile()
+	try:
+		inputFile = _InputFileHandler(file)
+		rootPath = inputFile.readInputFile()
+	except AssertionError:
+		exit(
+				{
+					"Message": "The given file did not end with \".js\"",
+					"ExitCode": 1
+				}
+			)
 
 	for file, data in inputFile.getInputInformation():
 		try:
@@ -81,4 +95,9 @@ def main():
 
 if __name__ == '__main__':
 	main()
-	exit()
+	exit(
+			{
+				"Message": "Done",
+				"ExitCode": 0
+			}
+		)
