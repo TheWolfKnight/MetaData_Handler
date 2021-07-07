@@ -5,7 +5,7 @@
 (Example)
 
 {
- "path" : Optional[str]
+ "path" : Optional[str],
  "file1" : [TAGS]
 }
 
